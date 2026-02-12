@@ -1,13 +1,23 @@
 import React from "react";
 import "../css/app.css";
+import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import { RippleBadge } from "./MaterialTheme/styled";
 
 function App() {
-  return <div>HOME</div>;
+  return <Container maxWidth="sm">
+    <Stack flexDirection={"column"}>
+    <Box sx={{my: 4}}>
+      <Typography variant="h4" component={"h4"}>
+        Hush kelibsiz from Robert
+      </Typography>
+    </Box>
+    <Box>
+      <RippleBadge badgeContent={4}>
+        <Button variant="contained">ButtonBosish</Button>
+      </RippleBadge>
+    </Box>
+    </Stack>
+  </Container>;
 }
 
 export default App;
-
-
-
-
-
