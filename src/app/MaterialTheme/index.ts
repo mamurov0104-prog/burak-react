@@ -48,7 +48,7 @@ const light = {
 };
 
 // A custom theme for this app
-let theme = createTheme(light);
+let theme = createTheme(light); // minimal qonuniyatlari 
 theme = createTheme(theme, {
 	components: {
 		MuiContainer: {
