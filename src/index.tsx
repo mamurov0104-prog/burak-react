@@ -4,7 +4,8 @@ import React from "react";
 
 // ReactDOM - brauzerdagi REAL DOM bilan ishlovchi modul
 // Bu React komponentlarni HTML ichiga joylashtirish uchun kerak
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
+import {createRoot }from "react-dom/client";
 
 // Redux store ni butun app ga ulash uchun Provider kerak
 import { Provider } from "react-redux";
@@ -49,10 +50,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 // React ilovani DOM ga joylashtirish
 // ============================
 
+const container = document.getElementById('root')!;
+const root = createRoot(container);
+
 // ReactDOM.render() — React 17 va undan oldingi versiyalar uchun
 // Bu App ni HTML dagi <div id="root"></div> ichiga joylashtiradi
 
-ReactDOM.render(
+root.render(
 
   // React.StrictMode — development rejimida
   // xatolarni aniqlash uchun ishlatiladi
@@ -97,7 +101,7 @@ ReactDOM.render(
 
   // React qaysi HTML element ichiga joylashtirilishini aytyapmiz
   // public/index.html ichida <div id="root"></div> bo‘ladi
-  document.getElementById("root")
+  // document.getElementById("root")
 );
 
 
