@@ -75,7 +75,7 @@ return (
                         startDecorator={<DescriptionOutlinedIcon />}
                         textColor={"neutral.300"}
                       >
-                        This is delicious food
+                        This is delicious ovqat
                       </Typography>
                     </CardOverflow>
                   </Card>
