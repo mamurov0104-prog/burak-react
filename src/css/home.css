@@ -213,6 +213,10 @@
   color: #e3c08d;
 }
 
+
+
+
+
 /* Advertaisment */
 .homepage .ads-restaurant-frame {
   width: 100%;
@@ -231,6 +235,11 @@
   transform: scale(1.5);
   overflow: hidden;
 }
+
+
+
+
+
 
 /* Active-Users */
 .homepage .active-users-frame {
