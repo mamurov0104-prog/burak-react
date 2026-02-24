@@ -1,8 +1,8 @@
 .order-page {
   width: 100%;
+  display: flex;
   height: auto;
   background: #f8f8ff;
-  display: flex;
 }
 
 .order-page .order-container {
