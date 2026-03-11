@@ -35,29 +35,8 @@ export default function HomePage() {
 
   const {popularDishes} = useSelector(PopularDishesRetriever);
       useEffect(() => {
-    // Backend server data request => Data (backenddan json formatda data krib keladi)
-const result = [
-    {
-        "_id": "6981a5b9575de293b66439aa",
-        "productStatus": "PROCESS",
-        "productCollection": "DISH",
-        "productName": "Palovsㅁ",
-        "productPrice": "20",
-        "productLeftCount": 100,
-        "productSize": "SMALL",
-        "productVolume": 1,
-        "productDesc": "Delicious meal Qoymasak ham bolardi",
-        "productImage": [],
-        "productViews": 0,
-        "createdAt": "2026-02-03T07:37:29.390Z",
-        "updatedAt": "2026-02-14T14:21:12.499Z",
-        "__v": 0
-    }
-]
-// @ts-ignore
-   setPopularDishes(result);
   }, []);
-
+ console.log("popularDishes: " , popularDishes );
     return <div className="homepage">
     <Statistics/>
     <PopularDishes/>
