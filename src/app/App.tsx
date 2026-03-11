@@ -26,7 +26,7 @@ import  UserPage  from "./screens/userPage";
 import  HomeNavbar  from "./components/headers/HomeNavbar";
 import  OtherNavbar  from "./components/headers/OtherNavbar";
 import  Footer  from "./components/footer";
-
+import Test from "./screens/Test"; 
 // App ga tegishli CSS fayl
 // Bu yerda global yoki maxsus style lar bo‘lishi mumkin
 import "../css/app.css";
@@ -60,6 +60,7 @@ function App() {
             <HelpPage />
           </Route>
            <Route path="/">
+           {/* <Test /> */}
             <HomePage />
           </Route>
         </Switch>
