@@ -38,12 +38,12 @@ export default function PopularDishes() {
             {popularDishes.length !== 0 ? (
 
               popularDishes.map((ele: Product) => {
-                // const imagePath = `${serverApi}/${ele.productImages[0]}`;
+                const imagePath = `${serverApi}/${ele.productImages[0]}`;
 
-  console.log("productImages:", ele.productImages);
-                const imagePath = ele.productImages?.[0]
-                  ? `${serverApi}/${ele.productImages[0]}`
-                  : "/img/no-image.png";
+  // console.log("productImages:", ele.productImages);
+  //               const imagePath = ele.productImages?.[0]
+  //                 ? `${serverApi}/${ele.productImages[0]}`
+  //                 : "/img/no-image.png";
   console.log("imagePath:", imagePath);
                 return (
 
@@ -52,12 +52,7 @@ export default function PopularDishes() {
                     <Card className="card">
 
                       <CardCover>
-                        {/* <img src={imagePath} alt={ele.productName}  /> */}
-                        <img
-  src={imagePath}
-  alt=""
-  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-/>
+                        <img src={imagePath} alt={ele.productName}  />
                       </CardCover>
 
                       <CardCover className={"card-cover"} />
