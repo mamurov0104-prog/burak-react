@@ -1,15 +1,20 @@
 import { AspectRatio, CardOverflow, CssVarsProvider } from "@mui/joy";
 import Card from "@mui/joy/Card";
 import { Box, Container, Stack, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrieveTopUsers } from "./selector";
+import { serverApi } from "../../../lib/config";
+import { Member } from "../../../lib/types/member";
 
-const activeUsers = [
-  { memberNick: "Martin", memberImage: "/img/martin.webp" },
-  { memberNick: "Justin", memberImage: "/img/justin.webp" },
-  { memberNick: "Rose", memberImage: "/img/rose.webp" },
-  { memberNick: "Nusret", memberImage: "/img/nusret.webp" },
-];
+/** REDUX SLICE & SELECTOR **/
+const topUsersRetriever = createSelector(retrieveTopUsers, (topUsers) => ({
+  topUsers,
+}));
 
 function ActiveUser() {
+  const { topUsers } = useSelector(topUsersRetriever);
+
   return (
     <div className="active-users-frame">
       <Container>
@@ -18,17 +23,21 @@ function ActiveUser() {
 
           <Stack className="cards-frame">
             <CssVarsProvider>
-              {activeUsers.length !== 0 ? (
-                activeUsers.map((ele, index) => {
+              {topUsers.length !== 0 ? (
+                topUsers.map((ele: Member) => {
+
+                  const imagePath = `${serverApi}/${ele.memberImage}`;
+
                   return (
-                    <Card key={index} variant="outlined" className="card">
+                    <Card key={ele._id} variant="outlined" className="card">
                       <CardOverflow>
                         <AspectRatio ratio="1">
-                          <img src={ele.memberImage} alt="" />
+                          <img src={imagePath} alt="" />
                         </AspectRatio>
                       </CardOverflow>
+
                       <CardOverflow variant="soft" className="card-detail">
-                        <Box className="member-nickname ">
+                        <Box className="member-nickname">
                           <Typography className="title">
                             {ele.memberNick}
                           </Typography>

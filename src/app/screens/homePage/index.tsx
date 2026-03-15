@@ -1,132 +1,82 @@
-// React kutubxonasidan React va useEffect hookini import qilamiz
 import React, { useEffect } from "react";
-
-// HomePage ichida ishlatiladigan UI componentlar
-import Statistics from "./Statistics";        // statistik ma'lumotlar componenti
-import PopularDishes from "./PopularDishes";  // mashhur taomlar componenti
-import NewDishes from "./NewDishes";          // yangi qo'shilgan taomlar componenti
-import Advertisement from "./Advertisement";  // reklama componenti
-import ActiveUsers from "./ActiveUsers";      // eng faol foydalanuvchilar componenti
-import Events from "./Events";                // eventlar componenti
-
-// Redux bilan ishlash uchun hooklar
-import { useDispatch, useSelector } from "react-redux";
-
-// Redux Toolkitdan Dispatch typeni import qilamiz (TypeScript uchun)
+import Statistics from "./Statistics";
+import PopularDishes from "./PopularDishes";
+import NewDishes from "./NewDishes";
+import Advertisement from "./Advertisement";
+import ActiveUsers from "./ActiveUsers";
+import Events from "./Events";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-
-// Reselect kutubxonasi — optimizatsiya qilingan selector yaratish uchun
-import { createSelector } from "reselect";
-
-// Redux slice ichidan actionlar (state ni o'zgartiruvchi buyruqlar)
 import { setNewDishes, setPopularDishes, setTopUsers } from "./slice";
-
-// Redux store dan ma'lumot olish uchun selector
-import { retrievePopularDishes } from "./selector";
-
-// TypeScript typelari
 import { Product } from "../../../lib/types/product";
+import ProductService from "../../services/ProductService";
 import { ProductCollection } from "../../../lib/enums/product.enum";
+import MemberService from "../../services/MemberService";
 import { Member } from "../../../lib/types/member";
-
-// css fayl
 import "../../../css/home.css";
 
-// =======================================================
-// REDUX ACTION DISPATCH HELPER
-// =======================================================
-
-// Bu funksiya dispatch ni qulay ishlatish uchun yozilgan.
-// Odatda Reduxda action yuborish uchun:
-// dispatch(setPopularDishes(data))
-// deb yoziladi.
-//
-// Bu wrapper orqali esa biz faqat:
-// setPopularDishes(data)
-// deb ishlatamiz.
-
+/** REDUX SLICE & SELECTOR **/
 const actionDispatch = (dispatch: Dispatch) => ({
-  // mashhur taomlarni Redux store ga yozadi
-  setPopularDishes: (data: Product[]) => dispatch(setPopularDishes(data)),
-
-  // yangi taomlarni Redux store ga yozadi
+  setPopularDishes: (data: Product[]) => dispatch(setPopularDishes(data)), // => setPopularDishes commandasini setPopularDishes reduceri orqali hosil qilib oldik
   setNewDishes: (data: Product[]) => dispatch(setNewDishes(data)),
-
-  // eng faol userlarni Redux store ga yozadi
   setTopUsers: (data: Member[]) => dispatch(setTopUsers(data)),
-});
-
-// =======================================================
-// REDUX SELECTOR (RESELECT)
-// =======================================================
-
-// createSelector yordamida optimizatsiya qilingan selector yaratamiz.
-// Bu selector Redux store ichidan popularDishes ni olib beradi.
-// Reselect cache qiladi va ortiqcha renderlarni kamaytiradi.
-
-const PopularDishesRetriever = createSelector(
-  retrievePopularDishes,        // store dan data olish
-  (popularDishes) => ({ popularDishes }) // componentga object sifatida qaytarish
-);
-
-// =======================================================
-// HOMEPAGE COMPONENT
-// =======================================================
+}); // setPopularDishes: commanda va reducer ni bir xil atadik va 1 chi kelgan commanda, 2 chi kelgan reducer
 
 export default function HomePage() {
-
-  // Redux dispatch ni olib kelamiz va actionDispatch orqali
-  // bizga kerakli action funksiyalarini hosil qilamiz
   const { setPopularDishes, setNewDishes, setTopUsers } = actionDispatch(
     useDispatch()
   );
+  // function component ichida setPopularDishes ni caqirib qo'lga olyapmiz
 
-  // Redux store dan popularDishes ni olish
-  // useSelector store dagi state ni componentga olib keladi
-  const { popularDishes } = useSelector(PopularDishesRetriever);
+  // console.log(process.env.REACT_APP_API_URL);
 
-  // React lifecycle hook
-  // component render bo‘lganda (mount) ishlaydi
   useEffect(() => {
+    // Backend server data request => Data (backenddan json formatda data krib keladi)
 
-    // odatda bu yerda API chaqiriladi
-    // masalan:
-    //
-    // fetchPopularDishes()
-    // .then(data => setPopularDishes(data))
-    //
-    // ya'ni backenddan data olib Redux store ga yoziladi
+    const product = new ProductService(); // ProductService class orqali yangi product objectini hosil qildik
+    // shu objectimizni methodlari yordamida backenddan malumotlarni chaqirib olamiz
+    product
+      .getProducts({
+        // product objectini getProduct methodi inputni qiymatini kiritishga majbur qiladi
+        page: 1,
+        limit: 4,
+        order: "productViews", // order - productViews ga asoslangan
+        productCollection: ProductCollection.DISH,
+      })
+      .then((data) => {
+        // backenddan data qabul qiladi
+        // console.log("data passed here:", data);
+        setPopularDishes(data); // qabul qilingan datani (redux Storage ga)setPopularDishes ga yuklaydi
+      })
+      .catch((err) => console.log(err));
 
+    product
+      .getProducts({
+        page: 1,
+        limit: 4,
+        order: "createdAt", // eng oxiri qo'shilgan taomlar
+        // productCollection: ProductCollection.DISH,
+      })
+      .then((data) => setNewDishes(data))
+      .catch((err) => console.log(err));
+
+    const member = new MemberService();
+    member
+      .getTopUsers()
+      .then((data) => setTopUsers(data))
+      .catch((err) => console.log(err));
+    // Slice: Data => Store (Slice mantig'i Backend dan kelgan Datani Redux Storage ga joylaydi )
   }, []);
 
-  // Redux store dan kelgan data ni console da ko'rish uchun
-  console.log("popularDishes: ", popularDishes);
-
-  // =======================================================
-  // UI RENDER
-  // =======================================================
-
   return (
-    <div className="homepage">
-
-      {/* Statistik ma'lumotlar */}
-      <Statistics/>
-
-      {/* Eng mashhur taomlar */}
-      <PopularDishes/>
-
-      {/* Yangi qo'shilgan taomlar */}
-      <NewDishes/>
-
-      {/* Reklama */}
-      <Advertisement/>
-
-      {/* Eng faol foydalanuvchilar */}
-      <ActiveUsers/>
-
-      {/* Eventlar */}
-      <Events/>
-
+    // return ichiga view ni joylandi
+    <div className={"homepage"}>
+      <Statistics />
+      <PopularDishes />
+      <NewDishes />
+      <Advertisement />
+      <ActiveUsers />
+      <Events />
     </div>
   );
 }

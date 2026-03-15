@@ -1,23 +1,29 @@
 import React from "react";
-import {
-  AspectRatio,
-  Card,
-  CardOverflow,
-  CssVarsProvider,
-  Typography,
-} from "@mui/joy";
 import { Box, Container, Stack } from "@mui/material";
+import AspectRatio from "@mui/joy/AspectRatio";
+import Card from "@mui/joy/Card";
+import CardOverflow from "@mui/joy/CardOverflow";
+import Typography from "@mui/joy/Typography";
+import { CssVarsProvider } from "@mui/joy/styles";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Divider from "../../components/divider";
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
+import { retrieveNewDishes } from "./selector";
+import { Product } from "../../../lib/types/product";
+import { serverApi } from "../../../lib/config";
+import { ProductCollection } from "../../../lib/enums/product.enum";
 
-const newDishes = [
-  { productName: "Kebab", imagePath: "/img/kebab.webp" },
-  { productName: "Cutlet", imagePath: "/img/cutlet.webp" },
-  { productName: "Kebab", imagePath: "/img/kebab-fresh.webp" },
-  { productName: "Lavash", imagePath: "/img/lavash.webp" },
-];
+/** REDUX SLICE & SELECTOR **/
+const newDishesRetriever = createSelector(retrieveNewDishes, (newDishes) => ({
+  newDishes,
+}));
 
 function NewDishes() {
+  const { newDishes } = useSelector(newDishesRetriever);
+
+  console.log("newDishes:", newDishes);
+
   return (
     <div className="new-products-frame">
       <Container>
@@ -26,27 +32,45 @@ function NewDishes() {
           <Stack className="cards-frame">
             <CssVarsProvider>
               {newDishes.length !== 0 ? (
-                newDishes.map((ele, index) => {
+                newDishes.map((ele: Product) => {
+
+                  const imagePath =
+                    ele.productImages && ele.productImages.length > 0
+                      ? `${serverApi}/${ele.productImages[0]}`
+                      : "/img/no-image.png";
+
+                  const sizeVolume =
+                    ele.productCollection === ProductCollection.DRINK
+                      ? ele.productVolume + "l"
+                      : ele.productSize + " size";
+
                   return (
-                    <Card key={index} variant="outlined" className="card">
+                    <Card key={ele._id} variant="outlined" className="card">
                       <CardOverflow>
-                        <div className="product-sale">Normal size</div>
+                        <div className="product-sale">{sizeVolume}</div>
+
                         <AspectRatio ratio="1">
-                          <img src={ele.imagePath} alt="" />
+                          <img src={imagePath} alt={ele.productName} />
                         </AspectRatio>
                       </CardOverflow>
+
                       <CardOverflow variant="soft" className="product-detail">
                         <Stack className="info">
                           <Stack flexDirection={"row"}>
                             <Typography className="title">
                               {ele.productName}
                             </Typography>
+
                             <Divider width="2" height="24" bg="#d9d9d9" />
-                            <Typography className="price">$12</Typography>
+
+                            <Typography className="price">
+                              ${ele.productPrice}
+                            </Typography>
                           </Stack>
+
                           <Stack>
                             <Typography className="views">
-                              20
+                              {ele.productViews}
                               <VisibilityIcon
                                 sx={{ fontSize: 20, marginLeft: "5px" }}
                               />
