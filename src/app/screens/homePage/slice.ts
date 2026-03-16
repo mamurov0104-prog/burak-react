@@ -1,38 +1,93 @@
+/**
+ * REDUX SLICE
+ *
+ * Bu fayl HomePage uchun global state ni boshqaradi.
+ *
+ * Redux store tuzilishi:
+ *
+ * store
+ *  └ homePage
+ *       ├ popularDishes
+ *       ├ newDishes
+ *       └ topUsers
+ *
+ * Bu state ga componentlar useSelector orqali kiradi.
+ */
+
 import { createSlice } from "@reduxjs/toolkit";
 import { HomePageState } from "../../../lib/types/screen";
 
+/**
+ * Boshlang‘ich state
+ *
+ * Hali backenddan data kelmagan paytda
+ * bu qiymatlar ishlatiladi.
+ */
 const initialState: HomePageState = {
-  // homePage screen componentiga daxldor sliceni hosil qildik
   popularDishes: [],
   newDishes: [],
   topUsers: [],
 };
 
+/**
+ * createSlice:
+ *   reducer + actionlarni avtomatik yaratadi.
+ */
 const homePageSlice = createSlice({
-  // bitta argument path bo'ladi, unga options larni yoziladi
-  name: "homePage", // Slice nomi
-  initialState, // yuqoridagi hosilgan qilingan boshlang'ich qiymat
+
+  name: "homePage",
+
+  initialState,
+
   reducers: {
-    // yuqoridagi ma'lumotlarni o'zgartiruvchi reducerlar
+
+    /**
+     * setPopularDishes
+     *
+     * Qachon ishlaydi?
+     *   HomePage component API chaqirganda
+     *
+     * Natija:
+     *   state.popularDishes yangilanadi
+     *
+     * Bu o‘zgarishdan keyin
+     * PopularDishes component qayta render bo‘ladi.
+     */
     setPopularDishes: (state, action) => {
-      // state => yuqoridagi HomePageState
-      // action => useEffect hook orqali Slice mantig'iga ko'ra backendan kelgan saqlab olingan Data
       state.popularDishes = action.payload;
-      // actionni payload qismida kirib kelgan malumotni initialState da joylashgan popularDishes nomli key mizni value siga tenglashtir yoki key ostidagi valueni yangilab ber
     },
+
+    /**
+     * setNewDishes
+     *
+     * Backenddan kelgan yangi productlar
+     * store ga yoziladi.
+     */
     setNewDishes: (state, action) => {
       state.newDishes = action.payload;
     },
+
+    /**
+     * setTopUsers
+     *
+     * Eng faol userlar ro‘yxati
+     * store ga yoziladi.
+     */
     setTopUsers: (state, action) => {
       state.topUsers = action.payload;
     },
   },
 });
 
-export const { setPopularDishes, setNewDishes, setTopUsers } =  // bu actionlarni tashqarida ishlatish uchun export qilindi
-homePageSlice.actions;
+/**
+ * actionlarni tashqariga chiqaramiz.
+ *
+ * Ular component ichida dispatch qilinadi.
+ */
+export const { setPopularDishes, setNewDishes, setTopUsers } =
+  homePageSlice.actions;
 
-const HomePageReducer = homePageSlice.reducer; 
-export default HomePageReducer;  
-// homePageSlice ga daxldor bo'lgan reducerni yaxlit holda tashqariga export qilindi
-// reducerni store ga 1 marta bog'lash uchun export qilinyapti
+/**
+ * Reducer store ga ulanish uchun export qilinadi.
+ */
+export default homePageSlice.reducer; 

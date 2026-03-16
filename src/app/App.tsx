@@ -1,77 +1,81 @@
 // React kutubxonasini import qilyapmiz
-// JSX ishlashi uchun kerak
 import React from "react";
 
-
-
-// MUI dan kerakli componentlarni import qilyapmiz
-// Box → universal wrapper (div o‘rniga ishlatiladi)
-// Button → tayyor MUI tugma
-// Container → contentni markazga joylashtiradi va maxWidth beradi
-// Stack → flexbox asosida elementlarni tartibli joylashtiradi
-// Typography → matnlar uchun professional text component
+// MUI componentlari
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 
-// Bu custom styled component
-// Ehtimol MaterialTheme/styled ichida yaratilgan
-// RippleBadge oddiy Badge emas — animatsiya yoki custom style bo‘lishi mumkin
+// Custom styled component
 import { RippleBadge } from "./MaterialTheme/styled";
+
 import { Link, useLocation } from "react-router-dom";
 import { Route } from "react-router-dom";
 import { Switch } from "react-router-dom";
-import  HomePage  from "./screens/homePage";
-import  ProductsPage  from "./screens/productsPage";
-import  OrdersPage  from "./screens/ordersPage";
-import  UserPage  from "./screens/userPage";
-import  HomeNavbar  from "./components/headers/HomeNavbar";
-import  OtherNavbar  from "./components/headers/OtherNavbar";
-import  Footer  from "./components/footer";
-import Test from "./screens/Test"; 
-// App ga tegishli CSS fayl
-// Bu yerda global yoki maxsus style lar bo‘lishi mumkin
+
+import HomePage from "./screens/homePage";
+import ProductsPage from "./screens/productsPage";
+import OrdersPage from "./screens/ordersPage";
+import UserPage from "./screens/userPage";
+import HomeNavbar from "./components/headers/HomeNavbar";
+import OtherNavbar from "./components/headers/OtherNavbar";
+import Footer from "./components/footer";
+import Test from "./screens/Test";
+
 import "../css/app.css";
-import "../css/navbar.css"
-import "../css/footer.css"
-import  HelpPage  from "./screens/helpPage";
+import "../css/navbar.css";
+import "../css/footer.css";
+
+import HelpPage from "./screens/helpPage";
+
+/* =========================
+   👇 QO‘SHILGAN JOY (1)
+   dostingdagi kabi basket hook
+========================= */
+import useBasket from "./hooks/useBasket";
+
 // ==============================
 // Asosiy App komponent
 // ==============================
 
 function App() {
 
-    const location = useLocation();
+  const location = useLocation();
+
+  /* =========================
+     👇 QO‘SHILGAN JOY (2)
+     onAdd shu yerda yaratiladi
+  ========================= */
+  const { onAdd } = useBasket();
 
   return (
-
     <>
-    {location.pathname === "/" ? <HomeNavbar/> : <OtherNavbar/>}
-        
-        <Switch>
-          <Route path="/products">
-            <ProductsPage />
-          </Route>
-          <Route path="/orders">
-            <OrdersPage/>
-          </Route>
-          <Route path="/member-page">
-            <UserPage />
-          </Route>
-           <Route path="/help">
-            <HelpPage />
-          </Route>
-           <Route path="/">
-           {/* <Test /> */}
-            <HomePage />
-          </Route>
-        </Switch>
-        <Footer/>
-      </>
+      {location.pathname === "/" ? <HomeNavbar /> : <OtherNavbar />}
+
+      <Switch>
+        <Route path="/products">
+          <ProductsPage onAdd={onAdd} />
+        </Route>
+
+        <Route path="/orders">
+          <OrdersPage />
+        </Route>
+
+        <Route path="/member-page">
+          <UserPage />
+        </Route>
+
+        <Route path="/help">
+          <HelpPage />
+        </Route>
+
+        <Route path="/">
+          {/* <Test /> */}
+          <HomePage />
+        </Route>
+      </Switch>
+
+      <Footer />
+    </>
   );
 }
 
-
-
-
-// App componentni export qilyapmiz
-// Shunda main.tsx yoki index.tsx ichida import qilsa bo‘ladi
 export default App;

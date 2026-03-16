@@ -40,10 +40,7 @@ export default function PopularDishes() {
               popularDishes.map((ele: Product) => {
                 const imagePath = `${serverApi}/${ele.productImages[0]}`;
 
-  // console.log("productImages:", ele.productImages);
-  //               const imagePath = ele.productImages?.[0]
-  //                 ? `${serverApi}/${ele.productImages[0]}`
-  //                 : "/img/no-image.png";
+
   console.log("imagePath:", imagePath);
                 return (
 
