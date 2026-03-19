@@ -122,7 +122,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
       setAuthMember(result);
       handleLoginClose();
     } catch (err) {
-      console.log("Error", err);
+      console.log("fashdiah", err);
       handleLoginClose();
       sweetErrorHandling(err).then();
     }

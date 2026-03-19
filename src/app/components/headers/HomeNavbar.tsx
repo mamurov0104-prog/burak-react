@@ -11,6 +11,7 @@ import {
 import { NavLink } from "react-router-dom";
 import { Logout } from "@mui/icons-material";
 import Basket from "./Basket";
+import { useGlobals } from "../../hooks/useGlobals";
 
 // TYPE
 interface CartItem {
@@ -55,7 +56,8 @@ export default function HomeNavbar(props: HomeNavbarProps) {
   } = props;
 
   //  keyinchalik useGlobals qo‘shamiz
-  const authMember = null;
+  // const authMember = null;
+  const { authMember } = useGlobals();
 
   return (
     <div className="home-navbar">
