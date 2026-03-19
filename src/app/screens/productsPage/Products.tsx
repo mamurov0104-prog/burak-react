@@ -360,7 +360,8 @@ export default function Products(props: ProductsProps) {
             <Box className="title">Our Address</Box>
             <iframe
               style={{ marginTop: "60px" }}
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2781.6814328836186!2d28.98446661557534!3d41.10559787929211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab56ac7ff7009%3A0x84c6097c80637640!2sCzn%20Burak%20Vadi%20%C4%B0stanbul!5e0!3m2!1sen!2str!4v1634742459931!5m2!1sen!2str"
+       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d379.6266756971754!2d71.155981512079!3d40.430702058095356!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38bb028e966a39b1%3A0x9983221e39dd013!2sBagdad%20District%2C%20Fergana%20Region%2C%20Uzbekistan!5e0!3m2!1sen!2skr!4v1773677699989!5m2!1sen!2skr"
+              /*<iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d1518.4863423443492!2d71.15603674440655!3d40.431603741544265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e6!4m5!1s0x38baff0009eaa439%3A0x9d3379ffa1d55fbd!2sDurmancha%20Mol-Kuy%20Bozori%2C%20C58F%2B49%2C%20Pandygan%2C%20Fergana%20Region%2C%20Uzbekistan!3m2!1d40.4153266!2d71.1733888!4m5!1s0x15577f67a0a74193%3A0x9deda9d2a3b16f2c!2sBaghdad%2C%20Baghdad%20Governorate%2C%20Iraq!3m2!1d33.315241!2d44.366067099999995!5e0!3m2!1sen!2skr!4v1773677424710!5m2!1sen!2skr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> */
               width="1320"
               height="500"
               referrerPolicy="no-referrer-when-downgrade"

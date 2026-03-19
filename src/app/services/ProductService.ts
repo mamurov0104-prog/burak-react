@@ -1,21 +1,4 @@
-/**
- * PRODUCT SERVICE
- *
- * Bu class frontend va backend orasidagi ko‘prik.
- *
- * Componentlar axios ishlatmaydi.
- * Ular faqat service methodlarini chaqiradi.
- *
- * Architecture:
- *
- * Component
- *    ↓
- * ProductService
- *    ↓
- * Axios
- *    ↓
- * Backend API
- */
+
 
 import axios from "axios";
 import { serverApi } from "../../lib/config";
