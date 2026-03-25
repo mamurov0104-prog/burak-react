@@ -14,7 +14,7 @@ const light = {
 			default: '#f8f8ff',
 			paper: common.white,
 		},
-		primary: { // Birlamchi ranglar
+		primary: {
 			contrastText: '#d7b586',
 			main: '#343434',
 		},
@@ -48,7 +48,7 @@ const light = {
 };
 
 // A custom theme for this app
-let theme = createTheme(light); // minimal qonuniyatlari 
+let theme = createTheme(light);
 theme = createTheme(theme, {
 	components: {
 		MuiContainer: {

@@ -1,167 +1,132 @@
 import React from "react";
-import { Box, Stack } from "@mui/material";
+import { Stack, Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
 import moment from "moment";
-
-//  NEW
 import { useSelector } from "react-redux";
 import { createSelector } from "@reduxjs/toolkit";
 import { retrieverProcessedOrders } from "./selector";
 import { Order, OrderItem, OrderUpdateInput } from "../../../lib/types/order";
-import { Product } from "../../../lib/types/product";
 import { serverApi, Messages } from "../../../lib/config";
+import { Product } from "../../../lib/types/product";
 import { useGlobals } from "../../hooks/useGlobals";
 import { sweetErrorHandling } from "../../../lib/sweetAlert";
 import { OrderStatus } from "../../../lib/enums/order.enum";
 import OrderService from "../../services/OrderService";
+import { T } from "../../../lib/types/common";
 
-// redux selector
+/** Redux  */
 const processedOrdersRetriever = createSelector(
   retrieverProcessedOrders,
   (processOrders) => ({ processOrders })
 );
 
-interface ProcessOrdersProps {
-  setValue: (value: string) => void;
+interface ProcessedOrdersProps {
+  setValue: (input: string) => void;
 }
 
-export default function ProcessOrders(props: ProcessOrdersProps) {
+export default function ProcessedOrders(props: ProcessedOrdersProps) {
   const { processOrders } = useSelector(processedOrdersRetriever);
   const { authMember, setOrderBuilder } = useGlobals();
   const { setValue } = props;
 
-  /**  ORDER FINISH HANDLER */
-  const finishOrderHandler = async (e: any) => {
+  /** HANDLER **/
+
+  const finishOrderHandler = async (e: T) => {
     try {
       if (!authMember) throw Error(Messages.error2);
 
       const orderId = e.target.value;
-
       const input: OrderUpdateInput = {
         orderId: orderId,
         orderStatus: OrderStatus.FINISH,
       };
 
-      const confirm = window.confirm("Have you received your order?");
-      if (confirm) {
+      const confirmation = window.confirm("Have you received your order?");
+      if (confirmation) {
         const order = new OrderService();
         await order.updateOrder(input);
-
-        setValue("3"); //  FINISHED TAB GA O‘TADI
-        setOrderBuilder(new Date()); //  REFRESH
+        setValue("3");
+        setOrderBuilder(new Date());
       }
     } catch (err) {
       console.log(err);
-      sweetErrorHandling(err);
+      sweetErrorHandling(err).then();
     }
   };
 
   return (
-    <TabPanel value={"2"}>
+    <TabPanel value="2">
       <Stack>
         {processOrders?.map((order: Order) => {
           return (
-            <Box key={order._id} className={"order-main-box"}>
-              
-              {/*  ITEMS */}
-              <Box className={"order-box-scroll"}>
-                {order.orderItems?.map((item: OrderItem) => {
-
-                  //  PRODUCT TOPISH
+            <Box key={order._id} className="order-main-box">
+              <Box className="order-box-scroll">
+                {order?.orderItems?.map((item: OrderItem) => {
                   const product: Product = order.productData.filter(
-                    (ele: Product) => ele._id === item.productId
+                    (ele: Product) => item.productId === ele._id
                   )[0];
-
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
-
                   return (
-                    <Box key={item._id} className={"orders-name-price"}>
-                      
-                      {/*  SENING LAYOUT SAQLANDI */}
-                      <img
-                        src={imagePath}
-                        className={"order-dish-img"}
-                        alt="dish"
-                      />
-
-                      <p className={"title-dish"}>
-                        {product.productName}
-                      </p>
-
-                      <Box className={"price-box"}>
+                    <Box key={item._id} className="orders-name-price">
+                      <Stack className="order-dish-class">
+                        <img src={imagePath} className="order-dish-img" />
+                        <p className="title-dish">{product.productName}</p>
+                      </Stack>
+                      <Stack className="price-box">
                         <p>${item.itemPrice}</p>
-
-                        <img src={"/icons/close.svg"} alt="close" />
-
+                        <img src="/icons/close.svg" />
                         <p>{item.itemQuantity}</p>
-
-                        <img src={"/icons/pause.svg"} alt="pause" />
-
+                        <img src="/icons/pause.svg" />
                         <p style={{ marginLeft: "15px" }}>
-                          ${item.itemPrice * item.itemQuantity}
+                          ${item.itemQuantity * item.itemPrice}
                         </p>
-                      </Box>
+                      </Stack>
                     </Box>
                   );
                 })}
               </Box>
 
-              {/*  TOTAL */}
               <Box className={"total-price-box"}>
                 <Box className={"box-total"}>
                   <p>Product price</p>
                   <p>${order.orderTotal - order.orderDelivery}</p>
-
-                  <img
-                    src={"/icons/plus.svg"}
-                    style={{ marginLeft: "20px" }}
-                    alt="plus"
-                  />
-
-                  <p>delivery cost</p>
+                  <img src={"/icons/plus.svg"} style={{ marginLeft: "20px" }} />
+                  <p> Delivery cost</p>
                   <p>${order.orderDelivery}</p>
-
                   <img
                     src={"/icons/pause.svg"}
                     style={{ marginLeft: "20px" }}
-                    alt="pause"
                   />
-
                   <p>Total</p>
                   <p>${order.orderTotal}</p>
                 </Box>
-
-                <p className={"data-comp"}>
+                <p className={"data-compl"}>
                   {moment().format("YY-MM-DD HH:mm")}
                 </p>
-
-                {/*  BUTTON */}
                 <Button
                   value={order._id}
-                  variant="contained"
+                  variant={"contained"}
                   className={"verify-button"}
                   onClick={finishOrderHandler}
                 >
-                  Verify to Fulfil
+                  Verify to fulfill
                 </Button>
               </Box>
             </Box>
           );
         })}
 
-        {/*  EMPTY STATE */}
         {!processOrders ||
-          (processOrders.length === 0 && (
+          (processOrders.length <= 0 && (
             <Box
               display={"flex"}
               flexDirection={"row"}
               justifyContent={"center"}
             >
               <img
-                src="/icons/noimage-list.svg"
+                src={"/icons/noimage-list.svg"}
                 style={{ width: 300, height: 300 }}
-                alt="no orders"
               />
             </Box>
           ))}

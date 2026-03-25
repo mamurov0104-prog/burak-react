@@ -19,58 +19,52 @@ const newDishesRetriever = createSelector(retrieveNewDishes, (newDishes) => ({
   newDishes,
 }));
 
-function NewDishes() {
+export default function NewDishes() {
   const { newDishes } = useSelector(newDishesRetriever);
 
   console.log("newDishes:", newDishes);
 
   return (
-    <div className="new-products-frame">
+    <div className={"new-products-frame"}>
       <Container>
-        <Stack className="main">
-          <Box className="category-title">Fresh Menu</Box>
-          <Stack className="cards-frame">
+        <Stack className={"main"}>
+          <Box className={"category-title"}>Fresh Menu</Box>
+          <Stack className={"cards-frame"}>
             <CssVarsProvider>
               {newDishes.length !== 0 ? (
-                newDishes.map((ele: Product) => {
-
-                  const imagePath =
-                    ele.productImages && ele.productImages.length > 0
-                      ? `${serverApi}/${ele.productImages[0]}`
-                      : "/img/no-image.png";
-
+                newDishes.map((product: Product) => {
+                  const imagePath = `${serverApi}/${product.productImages[0]}`;
                   const sizeVolume =
-                    ele.productCollection === ProductCollection.DRINK
-                      ? ele.productVolume + "l"
-                      : ele.productSize + " size";
-
+                    product.productCollection === ProductCollection.DRINK
+                      ? product.productVolume + "l"
+                      : product.productSize + "size";
                   return (
-                    <Card key={ele._id} variant="outlined" className="card">
+                    <Card
+                      key={product._id}
+                      variant="outlined"
+                      className={"card"}
+                    >
                       <CardOverflow>
                         <div className="product-sale">{sizeVolume}</div>
-
                         <AspectRatio ratio="1">
-                          <img src={imagePath} alt={ele.productName} />
+                          <img src={imagePath} alt="" />
                         </AspectRatio>
                       </CardOverflow>
 
                       <CardOverflow variant="soft" className="product-detail">
                         <Stack className="info">
                           <Stack flexDirection={"row"}>
-                            <Typography className="title">
-                              {ele.productName}
+                            <Typography className={"title"}>
+                              {product.productName}
                             </Typography>
-
                             <Divider width="2" height="24" bg="#d9d9d9" />
-
-                            <Typography className="price">
-                              ${ele.productPrice}
+                            <Typography className={"price"}>
+                              ${product.productPrice}
                             </Typography>
                           </Stack>
-
                           <Stack>
-                            <Typography className="views">
-                              {ele.productViews}
+                            <Typography className={"views"}>
+                              {product.productViews}
                               <VisibilityIcon
                                 sx={{ fontSize: 20, marginLeft: "5px" }}
                               />
@@ -82,7 +76,7 @@ function NewDishes() {
                   );
                 })
               ) : (
-                <Box className="no-data">New products are not avaible</Box>
+                <Box className="no-data">New products are not available!</Box>
               )}
             </CssVarsProvider>
           </Stack>
@@ -91,5 +85,3 @@ function NewDishes() {
     </div>
   );
 }
-
-export default NewDishes;

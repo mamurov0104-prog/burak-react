@@ -70,7 +70,7 @@ function App() {
         />
       ) : (
         <OtherNavbar
-          cartItems={cartItems}  
+          cartItems={cartItems}
           onAdd={onAdd}
           onRemove={onRemove}
           onDelete={onDelete}

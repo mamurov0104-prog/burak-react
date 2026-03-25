@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 
-export const RippleBadge = styled(Badge)(({ theme }) => ({ // buttoni oziga wrap qilish uchun
+export const RippleBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     color: "#44b700",
     background: "white",
